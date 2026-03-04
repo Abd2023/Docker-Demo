@@ -1,0 +1,30 @@
+services:
+  app:
+    build: .
+    container_name: web-demo-app
+    command: npm run dev
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000
+      DB_ENABLED: "true"
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: web_demo
+    volumes:
+      - ./src:/app/src
+      - /app/node_modules
+    depends_on:
+      - db
+
+  db:
+    image: postgres:16-alpine
+    container_name: web-demo-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: web_demo
+    ports:
+      - "5432:5432"
